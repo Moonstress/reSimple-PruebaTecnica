@@ -39,16 +39,17 @@ npm start
 Open the application in your browser: http://localhost:3000
 
 3. **Folder Structure:**
-src/: Contains the source code.
-components/: React components used in the project.
-css/: Stylesheets for styling the components.
-services/: Utility functions and data handling services.
-Usage
-Navigate through the Companies, Areas, and Workers using the provided interface.
-Expand and collapse sections to view detailed information.
-Ensure uniqueness of RUT keys is maintained.
-Contributing
-Contributions are welcome! Feel free to open an issue or submit a pull request.
+- src/: Contains the source code.
+- components/: React components used in the project.
+- css/: Stylesheets for styling the components.
+- services/: Utility functions and data handling services.
+
+**Usage**
+
+- Navigate through the Companies, Areas, and Workers using the provided interface.
+- Expand and collapse sections to view detailed information.
+- Ensure uniqueness of RUT keys is maintained.
+
 
 **License**
 This project is licensed under the MIT License.
