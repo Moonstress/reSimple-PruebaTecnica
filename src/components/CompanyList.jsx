@@ -1,16 +1,19 @@
+// Import necessary dependencies and styles
 import React, { useState, useEffect } from 'react';
 import { ChevronUpIcon, ChevronDownIcon } from '@primer/octicons-react';
 import { readExcelData, readJsonData } from '../services/dataUtils.js';
 import { mergeData } from '../services/dataService'; // Import the mergeData function
 import '../css/styles.css';
 
-
+// Define the CompanyList component
 export const CompanyList = () => {
+  // State variables for data and accordion state
   const [excelData, setExcelData] = useState([]);
   const [jsonData, setJsonData] = useState({});
   const [expandedCompanies, setExpandedCompanies] = useState({});
   const [expandedAreas, setExpandedAreas] = useState({});
 
+  // Fetch data from Excel and JSON files on component mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -30,6 +33,7 @@ export const CompanyList = () => {
     fetchData();
   }, []);
 
+  // Toggle state for expanded companies
   const toggleCompanyAccordion = (companyId) => {
     setExpandedCompanies((prevExpanded) => ({
       ...prevExpanded,
@@ -37,6 +41,7 @@ export const CompanyList = () => {
     }));
   };
 
+  // Toggle state for expanded areas within a company
   const toggleAreaAccordion = (companyId, areaId) => {
     setExpandedAreas((prevExpanded) => ({
       ...prevExpanded,
@@ -47,23 +52,40 @@ export const CompanyList = () => {
     }));
   };
 
+  // Render individuals within an area, avoiding duplicates based on RUT
   const renderIndividuals = (companyId, areaId) => {
+    // Maintain a set to keep track of unique RUTs
+    const uniqueRuts = new Set();
+
     return excelData
       .filter(
         (individual) =>
           individual.ID_EMPRESA === companyId && individual.ID_AREA === areaId
       )
-      .map((individual) => (
-        <tr key={individual.RUT_TRABAJADOR}>
-          <td>{individual.NOMBRE_TRABAJADOR}</td>
-          <td>{individual.RUT_TRABAJADOR}</td>
-          <td>{individual.EDAD}</td>
-          <td>{individual.PROFESION || ''}</td>
-          <td>{individual.CARGO}</td>
-        </tr>
-      ));
+      .map((individual) => {
+        // Check if RUT is already rendered, skip if true
+        if (uniqueRuts.has(individual.RUT_TRABAJADOR)) {
+          return null;
+        }
+
+        // Add RUT to the set to track uniqueness
+        uniqueRuts.add(individual.RUT_TRABAJADOR);
+
+        // Render individual if not a duplicate
+        return (
+          <tr key={individual.RUT_TRABAJADOR}>
+            <td>{individual.NOMBRE_TRABAJADOR}</td>
+            <td>{individual.RUT_TRABAJADOR}</td>
+            <td>{individual.EDAD}</td>
+            <td>{individual.PROFESION || ''}</td>
+            <td>{individual.CARGO}</td>
+          </tr>
+        );
+      })
+      .filter((individual) => individual !== null); // Filter out null entries
   };
 
+  // Render the main component structure
   return (
     <div className="company-list">
       {jsonData?.EMPRESAS?.map((company) => (

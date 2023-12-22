@@ -1,6 +1,7 @@
 // src/views/Home.jsx
 import React, { useState, useEffect } from 'react';
 import { CompanyList } from '../components/CompanyList';
+import Header from '../components/Header';
 
 const Home = () => {
   const [companiesData, setCompaniesData] = useState([]);  // Use state to store data
@@ -21,7 +22,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Company Hierarchy</h1>
+      <Header/>
       <CompanyList companies={companiesData} />
     </div>
   );
